@@ -33,6 +33,7 @@
     "@mikro-orm/core": "^5.8.1",
     "@mikro-orm/migrations": "^5.8.1",
     "@mikro-orm/postgresql": "^5.8.1",
+    "express": "^4.18.2",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
