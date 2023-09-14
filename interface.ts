@@ -4,7 +4,7 @@ export interface AuthQuery {
     register(userInfo: User): Promise<User>;
 	login(
 		userInfo: Pick<User, 'phoneNumber' | 'password'>,
-	): Promise<{ tokenData: TokenData }>;
+	): Promise<{ userData: User; tokenData: TokenData  }>;
 	authMiddleware(
 		req: any,
 		checkPermission?: boolean,

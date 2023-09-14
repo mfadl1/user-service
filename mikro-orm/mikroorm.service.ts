@@ -3,7 +3,7 @@ import { AuthQuery } from "../interface";
 import { User, TokenData } from "../types";
 import { UserModel } from "./entities/user.entity";
 import { compare, genSaltSync, hashSync } from "bcrypt";
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify } from "jsonwebtoken";
 
 export class AuthenticatorServiceMikroOrm implements AuthQuery {
   constructor(
@@ -39,12 +39,12 @@ export class AuthenticatorServiceMikroOrm implements AuthQuery {
   }
   public async login(
     userInfo: Pick<User, "password" | "phoneNumber">
-  ): Promise<{ tokenData: TokenData  }> {
+  ): Promise<{ userData: User; tokenData: TokenData }> {
     const em = this.entityManager.fork();
 
     const userFound = await em.findOne(UserModel, {
-        phoneNumber: userInfo.phoneNumber,
-      });
+      phoneNumber: userInfo.phoneNumber,
+    });
 
     if (!userFound) {
       throw new Error(`Your credential isn't valid`);
@@ -55,19 +55,15 @@ export class AuthenticatorServiceMikroOrm implements AuthQuery {
       userFound.password
     );
 
-    if (!isCredential)
-      throw new Error(`Your credential isn't valid`);
+    if (!isCredential) throw new Error(`Your credential isn't valid`);
 
     return {
+      userData: userFound,
       tokenData: {
         expiresIn: this.jwtExpiresIn,
-        token: sign(
-          { phoneNumber: userInfo.phoneNumber },
-          this.jwtSecretKey,
-          {
-            expiresIn: this.jwtExpiresIn,
-          }
-        ),
+        token: sign({ phoneNumber: userInfo.phoneNumber }, this.jwtSecretKey, {
+          expiresIn: this.jwtExpiresIn,
+        }),
       },
     };
   }
