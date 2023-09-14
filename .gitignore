@@ -7,6 +7,15 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+# Node artifact files
+node_modules/
+dist/
+lib/
+config.test.ts
+mikro-orm.config.*
+.tsbuildinfo
+.wireit
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
